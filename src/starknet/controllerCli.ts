@@ -114,7 +114,7 @@ export class CartridgeControllerCli {
   }
 
   async flee(adventurerId: string): Promise<ControllerResult> {
-    // TODO verify from live tx (flee signature)
+    // Verified from live tx: flee(adventurer_id, flee_until_death: bool)
     return this.execute("flee", [adventurerId, "0x0"]);
   }
 
