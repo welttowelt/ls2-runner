@@ -5,6 +5,7 @@ import { logger } from "../utils/logger.js";
 import type { Phase } from "../types.js";
 import { GameStateParser } from "./stateParser.js";
 import { installExecuteInterceptor, popLastCapturedBundle, type CapturedBundle } from "./bundleProbe.js";
+import { BrowserActuator } from "./actuator.js";
 
 // Browser sensor + bundle probe:
 // - Intercepts GraphQL for state signals
@@ -15,6 +16,8 @@ export class GameStateReader {
   private browser!: Browser;
   private page!: Page;
   private readonly parser = new GameStateParser();
+
+  private actuator: BrowserActuator | null = null;
 
   constructor(private readonly screenshotsDir = "./screenshots") {}
 
@@ -47,6 +50,10 @@ export class GameStateReader {
     // Install tx bundle interceptor (does nothing unless a tx would be executed).
     await installExecuteInterceptor(this.page).catch(() => undefined);
 
+    // Install actuator hooks
+    this.actuator = new BrowserActuator(this.page);
+    await this.actuator.ensureHooksInstalled().catch(() => undefined);
+
     logger.info({ url: this.page.url() }, "sensor browser launched");
   }
 
@@ -71,5 +78,10 @@ export class GameStateReader {
 
   async getLastBlockedTxBundle(): Promise<CapturedBundle | null> {
     return popLastCapturedBundle(this.page);
+  }
+
+  getActuator(): BrowserActuator {
+    if (!this.actuator) throw new Error("actuator not initialized");
+    return this.actuator;
   }
 }

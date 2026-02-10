@@ -1,0 +1,9 @@
+{
+  "calls": [
+    {
+      "contractAddress": "0x6f7c4350d6d5ee926b3ac4fa0c9c351055456e75c92227468d84232fc493a9c",
+      "entrypoint": "attack",
+      "calldata": ["0x2da96","0x0"]
+    }
+  ]
+}
