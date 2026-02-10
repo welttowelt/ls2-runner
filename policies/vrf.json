@@ -1,0 +1,14 @@
+{
+  "contracts": {
+    "0x051fea4450da9d6aee758bdeba88b2f665bcbf549d2c61421aa724e9ac0ced8f": {
+      "name": "Provable Games VRF",
+      "methods": [
+        {
+          "name": "request_random",
+          "entrypoint": "request_random",
+          "description": "Request randomness used by Loot Survivor actions"
+        }
+      ]
+    }
+  }
+}

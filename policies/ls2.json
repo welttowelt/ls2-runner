@@ -8,6 +8,7 @@
         { "name": "flee", "entrypoint": "flee", "description": "Flee (bool flee_until_death)" },
         { "name": "select_stat_upgrades", "entrypoint": "select_stat_upgrades", "description": "Select level-up stat allocations" },
         { "name": "buy_items", "entrypoint": "buy_items", "description": "Market buy + optional auto-equip" },
+        { "name": "request_random", "entrypoint": "request_random", "description": "(NOTE) actually lives on VRF contract; keep separate policy file if you want strict separation" },
         { "name": "upgrade", "entrypoint": "upgrade", "description": "Upgrade stat" },
         { "name": "buy_potion", "entrypoint": "buy_potion", "description": "Buy potion" },
         { "name": "equip", "entrypoint": "equip", "description": "Equip item" },

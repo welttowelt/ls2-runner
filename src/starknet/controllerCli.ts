@@ -109,7 +109,7 @@ export class CartridgeControllerCli {
   }
 
   async attack(adventurerId: string): Promise<ControllerResult> {
-    // TODO verify from live tx (attack signature)
+    // Verified from live tx: attack(adventurer_id, attack_until_death: bool)
     return this.execute("attack", [adventurerId, "0x0"]);
   }
 
