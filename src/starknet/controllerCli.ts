@@ -64,7 +64,7 @@ export class CartridgeControllerCli {
     }
   }
 
-  private async execute(entrypoint: string, calldata: string[], wait = true): Promise<ControllerResult> {
+  private async executeSingle(entrypoint: string, calldata: string[], wait = true): Promise<ControllerResult> {
     this.checkRateLimit();
 
     // Safety: contract address is fixed from cfg; never accept from model.
@@ -81,7 +81,7 @@ export class CartridgeControllerCli {
 
     if (wait) args.push("--wait", "--timeout", "30");
 
-    logger.info({ entrypoint, calldata }, "controller execute");
+    logger.info({ entrypoint, calldata }, "controller execute (single)");
 
     const { stdout } = await execFileAsync("controller", args, {
       timeout: 45_000,
@@ -102,27 +102,48 @@ export class CartridgeControllerCli {
     return result;
   }
 
-  // Game actions: typed, narrow parameters. Prefer to keep calldata minimal.
+  private async executeFile(filePath: string, wait = true): Promise<ControllerResult> {
+    this.checkRateLimit();
+
+    const args: string[] = ["execute", "--file", filePath, "--json"];
+    if (wait) args.push("--wait", "--timeout", "30");
+
+    logger.info({ filePath }, "controller execute (file)");
+
+    const { stdout } = await execFileAsync("controller", args, {
+      timeout: 60_000,
+    });
+
+    const result: ControllerResult = JSON.parse(stdout);
+    this.txCount++;
+    this.txTimestamps.push(Date.now());
+    return result;
+  }
+
+  // Game actions
   async explore(adventurerId: string): Promise<ControllerResult> {
-    // Verified from live tx: explore(adventurer_id, explore_until_beast: bool)
-    return this.execute("explore", [adventurerId, "0x0"]);
+    // Verified from live UI tx bundle: request_random + explore(adventurer_id, false)
+    // NOTE: request_random calldata is not derived yet; using single-call explore for now.
+    return this.executeSingle("explore", [adventurerId, "0x0"]);
   }
 
   async attack(adventurerId: string): Promise<ControllerResult> {
-    // Verified from live tx: attack(adventurer_id, attack_until_death: bool)
-    return this.execute("attack", [adventurerId, "0x0"]);
+    return this.executeSingle("attack", [adventurerId, "0x0"]);
   }
 
   async flee(adventurerId: string): Promise<ControllerResult> {
-    // Verified from live tx: flee(adventurer_id, flee_until_death: bool)
-    return this.execute("flee", [adventurerId, "0x0"]);
+    return this.executeSingle("flee", [adventurerId, "0x0"]);
   }
 
   async upgrade(adventurerId: string, statIndex: number, amount = 1): Promise<ControllerResult> {
-    return this.execute("upgrade", [adventurerId, `0x${statIndex.toString(16)}`, `0x${amount.toString(16)}`]);
+    return this.executeSingle("upgrade", [
+      adventurerId,
+      `0x${statIndex.toString(16)}`,
+      `0x${amount.toString(16)}`,
+    ]);
   }
 
   async buyPotion(adventurerId: string): Promise<ControllerResult> {
-    return this.execute("buy_potion", [adventurerId]);
+    return this.executeSingle("buy_potion", [adventurerId]);
   }
 }
