@@ -1,6 +1,9 @@
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { logger } from "../utils/logger.js";
+import fs from "node:fs/promises";
+import path from "node:path";
+import { encodeCalls } from "./calls.js";
 
 const execFileAsync = promisify(execFile);
 
@@ -17,6 +20,7 @@ export type ControllerCliConfig = {
   contractAddress: string;
   maxTxPerMinute: number;
   maxTxPerSession: number;
+  callsTmpDir?: string;
 };
 
 export class CartridgeControllerCli {
@@ -27,6 +31,10 @@ export class CartridgeControllerCli {
     if (!cfg.contractAddress?.startsWith("0x")) {
       throw new Error("LS2_CONTRACT_ADDRESS must be set to a hex 0x... address");
     }
+  }
+
+  private tmpDir() {
+    return this.cfg.callsTmpDir ?? "./.tmp";
   }
 
   getTxCount() {
@@ -118,6 +126,14 @@ export class CartridgeControllerCli {
     this.txCount++;
     this.txTimestamps.push(Date.now());
     return result;
+  }
+
+  async executeBundle(calls: Array<{ contractAddress: string; entrypoint: string; calldata: Array<string | number | boolean> }>) {
+    await fs.mkdir(this.tmpDir(), { recursive: true });
+    const filePath = path.join(this.tmpDir(), `calls-${Date.now()}.json`);
+    const payload = encodeCalls(calls);
+    await fs.writeFile(filePath, JSON.stringify(payload, null, 2));
+    return this.executeFile(filePath);
   }
 
   // Game actions

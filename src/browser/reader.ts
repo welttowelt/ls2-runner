@@ -4,11 +4,12 @@ import path from "node:path";
 import { logger } from "../utils/logger.js";
 import type { Phase } from "../types.js";
 import { GameStateParser } from "./stateParser.js";
+import { installExecuteInterceptor, popLastCapturedBundle, type CapturedBundle } from "./bundleProbe.js";
 
-// Read-only browser sensor:
-// - Intercepts GraphQL for robust state signals
+// Browser sensor + bundle probe:
+// - Intercepts GraphQL for state signals
 // - Provides phase detection + screenshots
-// - Never clicks buttons
+// - Optional: captures the next tx bundle by intercepting account.execute and then blocking it
 
 export class GameStateReader {
   private browser!: Browser;
@@ -16,6 +17,10 @@ export class GameStateReader {
   private readonly parser = new GameStateParser();
 
   constructor(private readonly screenshotsDir = "./screenshots") {}
+
+  getPage(): Page {
+    return this.page;
+  }
 
   getParser() {
     return this.parser;
@@ -38,6 +43,10 @@ export class GameStateReader {
     });
 
     await this.page.goto("https://lootsurvivor.io/survivor", { waitUntil: "domcontentloaded" });
+
+    // Install tx bundle interceptor (does nothing unless a tx would be executed).
+    await installExecuteInterceptor(this.page).catch(() => undefined);
+
     logger.info({ url: this.page.url() }, "sensor browser launched");
   }
 
@@ -58,5 +67,9 @@ export class GameStateReader {
     const hasFlee = await this.page.locator("button:has-text('Flee'), button:has-text('FLEE')").first().isVisible().catch(() => false);
     const hasExplore = await this.page.locator("button:has-text('Explore'), button:has-text('EXPLORE')").first().isVisible().catch(() => false);
     return this.parser.detectPhaseFromDomSignals({ bodyText, hasAttack, hasFlee, hasExplore });
+  }
+
+  async getLastBlockedTxBundle(): Promise<CapturedBundle | null> {
+    return popLastCapturedBundle(this.page);
   }
 }
