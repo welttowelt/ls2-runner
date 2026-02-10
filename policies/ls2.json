@@ -1,19 +1,27 @@
 {
   "contracts": {
     "0x6f7c4350d6d5ee926b3ac4fa0c9c351055456e75c92227468d84232fc493a9c": {
-      "name": "Loot Survivor 2",
+      "name": "Loot Survivor 2 (Game)",
       "methods": [
-        { "name": "explore", "entrypoint": "explore", "description": "Explore (bool explore_until_beast)" },
-        { "name": "attack", "entrypoint": "attack", "description": "Attack once" },
-        { "name": "flee", "entrypoint": "flee", "description": "Flee (bool flee_until_death)" },
-        { "name": "select_stat_upgrades", "entrypoint": "select_stat_upgrades", "description": "Select level-up stat allocations" },
-        { "name": "buy_items", "entrypoint": "buy_items", "description": "Market buy + optional auto-equip" },
-        { "name": "request_random", "entrypoint": "request_random", "description": "(NOTE) actually lives on VRF contract; keep separate policy file if you want strict separation" },
-        { "name": "upgrade", "entrypoint": "upgrade", "description": "Upgrade stat" },
+        { "name": "explore", "entrypoint": "explore", "description": "explore(adventurer_id, explore_until_beast: bool)" },
+        { "name": "attack", "entrypoint": "attack", "description": "attack(adventurer_id, attack_until_death: bool)" },
+        { "name": "flee", "entrypoint": "flee", "description": "flee(adventurer_id, flee_until_death: bool)" },
+
+        { "name": "select_stat_upgrades", "entrypoint": "select_stat_upgrades", "description": "Used by UI before actions (stat allocation); we will likely replace with explicit level-up handler" },
+        { "name": "buy_items", "entrypoint": "buy_items", "description": "Market buys + optional auto-equip" },
+
+        { "name": "upgrade", "entrypoint": "upgrade", "description": "Upgrade stat (signature TBD)" },
         { "name": "buy_potion", "entrypoint": "buy_potion", "description": "Buy potion" },
         { "name": "equip", "entrypoint": "equip", "description": "Equip item" },
         { "name": "drop_item", "entrypoint": "drop_item", "description": "Drop item" },
         { "name": "new_game", "entrypoint": "new_game", "description": "Start new game" }
+      ]
+    },
+
+    "0x051fea4450da9d6aee758bdeba88b2f665bcbf549d2c61421aa724e9ac0ced8f": {
+      "name": "Provable Games VRF",
+      "methods": [
+        { "name": "request_random", "entrypoint": "request_random", "description": "Randomness request used by explore/attack/flee bundles" }
       ]
     }
   }
