@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2022", "DOM"],
+    "types": ["node"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "@daydreamsai/core": ["./node_modules/@daydreamsai/core/dist/index.d.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "scripts/**/*.ts"],
+  "exclude": ["src/contexts/**", "src/browser/controller.ts", "src/browser/selectors.ts", "src/browser/txRateLimiter.ts"]
+}
