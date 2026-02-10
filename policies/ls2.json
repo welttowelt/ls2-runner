@@ -3,9 +3,10 @@
     "0x6f7c4350d6d5ee926b3ac4fa0c9c351055456e75c92227468d84232fc493a9c": {
       "name": "Loot Survivor 2",
       "methods": [
-        { "name": "explore", "entrypoint": "explore", "description": "Explore once" },
+        { "name": "explore", "entrypoint": "explore", "description": "Explore (bool explore_until_beast)" },
         { "name": "attack", "entrypoint": "attack", "description": "Attack once" },
         { "name": "flee", "entrypoint": "flee", "description": "Flee" },
+        { "name": "select_stat_upgrades", "entrypoint": "select_stat_upgrades", "description": "Select level-up stat allocations" },
         { "name": "upgrade", "entrypoint": "upgrade", "description": "Upgrade stat" },
         { "name": "buy_potion", "entrypoint": "buy_potion", "description": "Buy potion" },
         { "name": "equip", "entrypoint": "equip", "description": "Equip item" },

@@ -104,17 +104,17 @@ export class CartridgeControllerCli {
 
   // Game actions: typed, narrow parameters. Prefer to keep calldata minimal.
   async explore(adventurerId: string): Promise<ControllerResult> {
-    // Assumed signature: explore(adventurer_id, till_beast)
+    // Verified from live tx: explore(adventurer_id, explore_until_beast: bool)
     return this.execute("explore", [adventurerId, "0x0"]);
   }
 
   async attack(adventurerId: string): Promise<ControllerResult> {
-    // Assumed signature: attack(adventurer_id, to_the_death)
+    // TODO verify from live tx (attack signature)
     return this.execute("attack", [adventurerId, "0x0"]);
   }
 
   async flee(adventurerId: string): Promise<ControllerResult> {
-    // Assumed signature: flee(adventurer_id, to_the_death)
+    // TODO verify from live tx (flee signature)
     return this.execute("flee", [adventurerId, "0x0"]);
   }
 
