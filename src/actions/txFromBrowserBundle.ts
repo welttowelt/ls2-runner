@@ -1,4 +1,4 @@
-import { action } from "@daydreamsai/core";
+import { action } from "../vendor/daydreams.js";
 import * as z from "zod";
 import type { CartridgeControllerCli } from "../starknet/controllerCli.js";
 import type { GameStateReader } from "../browser/reader.js";
@@ -12,7 +12,7 @@ export const txFromLastCapturedBundle = (params: { ctrl: CartridgeControllerCli;
     name: "txFromLastCapturedBundle",
     description: "Re-submit the last blocked tx bundle captured in the browser via controller-cli.",
     schema: z.object({}),
-    handler: async (_args, ctx: any) => {
+    handler: async (_args: any, ctx: any) => {
       if (!params.reader) return { success: false, error: "no-browser" };
 
       const bundle = await params.reader.getLastBlockedTxBundle();

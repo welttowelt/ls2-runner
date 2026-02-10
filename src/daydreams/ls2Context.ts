@@ -1,17 +1,17 @@
 import * as z from "zod";
-import type { Context, WorkingMemory } from "@daydreamsai/core";
+import type { Context, WorkingMemory } from "../vendor/daydreams.js";
 
 function emptyWorkingMemory(): WorkingMemory {
   return { inputs: [], outputs: [], thoughts: [], calls: [], results: [] };
 }
 
-export const ls2Context: Context<WorkingMemory, any, { runId: string }> = {
+export const ls2Context: any = {
   type: "ls2",
-  schema: z.object({ runId: z.string() }),
-  key: ({ runId }) => `ls2:${runId}`,
-  setup: async ({ runId }) => ({ runId }),
+  schema: z.object({ runId: z.string() }) as any,
+  key: ({ runId }: any) => `ls2:${runId}`,
+  setup: async ({ runId }: any) => ({ runId }),
   create: () => emptyWorkingMemory(),
-  instructions: ({ args }) => [
+  instructions: ({ args }: any) => [
     `You are an autonomous Loot Survivor 2 runner.`,
     `Hard rules:`,
     `- On every tick: call observeState first.`,

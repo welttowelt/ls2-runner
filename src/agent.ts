@@ -1,4 +1,4 @@
-import { createDreams } from "@daydreamsai/core";
+import { createDreams } from "./vendor/daydreams.js";
 import { anthropic } from "@ai-sdk/anthropic";
 import type { CartridgeControllerCli } from "./starknet/controllerCli.js";
 import type { GameStateReader } from "./browser/reader.js";

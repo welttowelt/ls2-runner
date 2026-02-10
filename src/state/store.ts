@@ -1,4 +1,4 @@
-import type { MemoryStore } from "@daydreamsai/core";
+import type { MemoryStore } from "../vendor/daydreams.js";
 import type { EpisodeMemory, GameRunMemory } from "../types.js";
 
 export const keys = {

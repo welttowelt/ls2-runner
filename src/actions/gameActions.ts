@@ -1,4 +1,4 @@
-import { action } from "@daydreamsai/core";
+import { action } from "../vendor/daydreams.js";
 import * as z from "zod";
 import type { CartridgeControllerCli } from "../starknet/controllerCli.js";
 import type { GameStateReader } from "../browser/reader.js";
@@ -12,7 +12,7 @@ export const makeGameActions = (params: { ctrl: CartridgeControllerCli; reader: 
     name: "attackBeast",
     description: "Attack the current beast (tx via controller-cli).",
     schema: z.object({}),
-    handler: async (_args, ctx: any) => {
+    handler: async (_args: any, ctx: any) => {
       const runId = ctx.contextId ?? "default";
       const mem = await getRunState(ctx.agent.memory, runId);
       if (mem.phase !== "beast_encounter") return { success: false, error: `invalid-phase:${mem.phase}` };
@@ -30,7 +30,7 @@ export const makeGameActions = (params: { ctrl: CartridgeControllerCli; reader: 
     name: "fleeBeast",
     description: "Flee from the current beast (tx via controller-cli).",
     schema: z.object({}),
-    handler: async (_args, ctx: any) => {
+    handler: async (_args: any, ctx: any) => {
       const runId = ctx.contextId ?? "default";
       const mem = await getRunState(ctx.agent.memory, runId);
       if (mem.phase !== "beast_encounter") return { success: false, error: `invalid-phase:${mem.phase}` };
@@ -48,7 +48,7 @@ export const makeGameActions = (params: { ctrl: CartridgeControllerCli; reader: 
     name: "explore",
     description: "Explore once (tx via controller-cli).",
     schema: z.object({}),
-    handler: async (_args, ctx: any) => {
+    handler: async (_args: any, ctx: any) => {
       const runId = ctx.contextId ?? "default";
       const mem = await getRunState(ctx.agent.memory, runId);
       if (mem.phase !== "idle" && mem.phase !== "exploring") return { success: false, error: `invalid-phase:${mem.phase}` };

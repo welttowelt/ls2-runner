@@ -1,4 +1,4 @@
-import { action } from "@daydreamsai/core";
+import { action } from "../vendor/daydreams.js";
 import * as z from "zod";
 import type { GameStateReader } from "../browser/reader.js";
 import { getRunState, setRunState } from "../state/store.js";
@@ -8,7 +8,7 @@ export const observeState = (reader: GameStateReader | null) =>
     name: "observeState",
     description: "Observe current game state (read-only). Must be called first on every tick.",
     schema: z.object({}),
-    handler: async (_args, ctx: any) => {
+    handler: async (_args: any, ctx: any) => {
       const runId = ctx.contextId ?? ctx.context?.key ?? "default";
       const mem = await getRunState(ctx.agent.memory, runId);
 

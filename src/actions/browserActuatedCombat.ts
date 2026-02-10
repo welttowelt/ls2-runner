@@ -1,4 +1,4 @@
-import { action } from "@daydreamsai/core";
+import { action } from "../vendor/daydreams.js";
 import * as z from "zod";
 import type { GameStateReader } from "../browser/reader.js";
 

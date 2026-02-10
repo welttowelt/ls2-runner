@@ -12,6 +12,8 @@
   "dependencies": {
     "@ai-sdk/anthropic": "^2.0.0",
     "@daydreamsai/core": "^0.1.0",
+    "@tavily/core": "^0.7.1",
+    "discord.js": "^14.25.1",
     "dotenv": "^16.4.7",
     "pino": "^9.0.0",
     "pino-pretty": "^11.0.0",
