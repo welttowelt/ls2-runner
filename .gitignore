@@ -5,4 +5,5 @@ dist/
 !.env.example
 screenshots/
 episodes/
+.pw-profile/
 .DS_Store
